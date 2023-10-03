@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <base target="_top">
+</head>
+<body>
+    <input type="file" id="csvFile" accept=".csv" onchange="handleFileSelect(event)">
+    <br>
+    <label for="sheetName">Sheet Name (optional):</label>
+    <input type="text" id="sheetName">
+    <br>
+    <label for="append">Append to Existing Data:</label>
+    <input type="checkbox" id="append">
+    <br><br>
+    <button onclick="importCSV()">Import CSV</button>
+    <script>
+        function handleFileSelect(event) {
+            var file = event.target.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    google.script.run.importCSV(e.target.result, document.getElementById('sheetName').value, document.getElementById('append').checked);
+                    google.script.host.close();
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        function importCSV() {
+            var fileInput = document.getElementById('csvFile');
+            if (fileInput.files.length > 0) {
+                var file = fileInput.files[0];
+                var sheetName = document.getElementById('sheetName').value;
+                var append = document.getElementById('append').checked;
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    google.script.run.importCSV(e.target.result, sheetName, append);
+                    google.script.host.close();
+                };
+                reader.readAsText(file);
+            }
+        }
+    </script>
+</body>
+</html>

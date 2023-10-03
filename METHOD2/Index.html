@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSV Import and Filter</title>
+    <style>
+        /* Style for the header */
+        h1 {
+          font-size: 24px;
+          text-align: center;
+          color: #333; /* Change to your desired text color */
+        }
+      
+        /* Style for the file input */
+        #csvFile {
+          display: block;
+          margin: 0 auto;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+        }
+      
+        /* Style for the button */
+        button {
+          display: block;
+          margin: 10px auto;
+          padding: 10px 20px;
+          background-color: #007bff; /* Change to your desired button color */
+          color: #fff; /* Change to your desired text color */
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+      
+        /* Style for the columnCheckboxes div */
+        #columnCheckboxes {
+          display: none;
+          margin: 10px auto;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+        }
+      
+        /* Style for the fetchButton */
+        #fetchButton {
+          display: none;
+          margin: 10px auto;
+          padding: 10px 20px;
+          background-color: #007bff; /* Change to your desired button color */
+          color: #fff; /* Change to your desired text color */
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+      
+        /* Style for the fetchedData div */
+        #fetchedData {
+          margin: 10px auto;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+        }
+      </style>
+      
+</head>
+<body>
+    <h1>CSV Import and Filter</h1>
+    
+    <!-- Add an input field for the user to upload the CSV file -->
+    <input type="file" id="csvFile" accept=".csv">
+    <br>
+    
+    <!-- Add a button to upload the CSV and show checkboxes -->
+    <button type="button" onclick="uploadCSV()">Upload CSV and Show Checkboxes</button>
+
+    <!-- Add a div to display checkboxes -->
+    <div id="columnCheckboxes" style="display: none;"></div>
+    
+    <!-- Add a button to import and fetch specified columns -->
+    <button type="button" id="fetchButton" onclick="importAndFetchColumns()" style="display: none;">Fetch Columns</button>
+    
+    <!-- Add a div to display the fetched data -->
+    <div id="fetchedData"></div>
+
+    <script>
+        function uploadCSV() {
+            var fileInput = document.getElementById('csvFile');
+            
+            if (!fileInput.files[0]) {
+                alert("Please upload a CSV file.");
+                return;
+            }
+            
+            // Read the CSV file
+            var file = fileInput.files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var csvData = e.target.result;
+                var columnNames = getCsvColumnNames(csvData);
+                generateColumnCheckboxes(columnNames);
+                document.getElementById('csvFile').style.display = 'none';
+                document.getElementById('columnCheckboxes').style.display = 'block';
+                document.getElementById('fetchButton').style.display = 'block';
+            };
+            reader.readAsText(file);
+        }
+
+        function importAndFetchColumns() {
+            var checkboxes = document.getElementsByName("columns");
+            var selectedColumns = [];
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    selectedColumns.push(checkboxes[i].value);
+                }
+            }
+
+            if (selectedColumns.length === 0) {
+                alert("Please select at least one column.");
+                return;
+            }
+
+            var fileInput = document.getElementById('csvFile');
+            var file = fileInput.files[0];
+            
+            // Read the CSV file
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var csvData = e.target.result;
+                google.script.run.withSuccessHandler(displayFetchedData).importAndFetchColumns(csvData, selectedColumns.join(","));
+            };
+            reader.readAsText(file);
+        }
+
+        function displayFetchedData(data) {
+            var fetchedDataDiv = document.getElementById('fetchedData');
+            fetchedDataDiv.innerHTML = '<a href="' + data + '" target="_blank">Click Here to Access the Google Sheet</a>';
+        }
+
+        // Function to extract column names from CSV data
+        function getCsvColumnNames(csvData) {
+            var lines = csvData.split('\n');
+            if (lines.length > 0) {
+                return lines[0].split(',');
+            }
+            return [];
+        }
+
+        // Function to dynamically generate checkboxes for columns
+        function generateColumnCheckboxes(columnNames) {
+            var columnCheckboxesDiv = document.getElementById("columnCheckboxes");
+            columnCheckboxesDiv.innerHTML = ""; // Clear previous checkboxes
+
+            for (var i = 0; i < columnNames.length; i++) {
+                var columnName = columnNames[i];
+                var checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.name = "columns";
+                checkbox.value = columnName;
+                checkbox.id = "column" + i;
+                var label = document.createElement("label");
+                label.htmlFor = "column" + i;
+                label.appendChild(document.createTextNode(columnName));
+                columnCheckboxesDiv.appendChild(checkbox);
+                columnCheckboxesDiv.appendChild(label);
+                columnCheckboxesDiv.appendChild(document.createElement("br"));
+            }
+        }
+    </script>
+</body>
+</html>
