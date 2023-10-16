@@ -14,7 +14,7 @@
 - All columns of the CSV file are dynamically generated as checkboxes, allowing the user to select which columns to retrieve.
 - After clicking "Fetch," a link is generated to open the output file/sheet in a new Google Spreadsheet.
 
-- link to the webapp made on APPSCRIPT -->https://script.google.com/macros/s/AKfycby_WRtJGTCo1_xNenIGIF2VN0RPqdkxP36MgjYI5B3pWTSllqz02mykTAvhnsT32O3ddw/exec
+- link to the webapp made on APPSCRIPT --> https://script.google.com/macros/s/AKfycbzhyHmGpO0B6Nr6WqhAHohgs0uxtPpZ3pAhyY1fk931dmZuA5nxx12lQgWZmzFQ1TbW/exec
 
 - xI prefer the second method as it is more user-friendly and also covers most of the pointers like selecting the columns and filtering them easily.
  
