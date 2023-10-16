@@ -3,85 +3,99 @@
 <head>
     <title>CSV Import and Filter</title>
     <style>
-        /* Style for the header */
-        h1 {
-          font-size: 24px;
-          text-align: center;
-          color: #333; /* Change to your desired text color */
+        /* Container styling */
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
-      
-        /* Style for the file input */
+
+        /* Header styling */
+        .container h1 {
+            font-size: 24px;
+            color: #007bff; /* Header text color */
+        }
+
+        /* File input styling */
         #csvFile {
-          display: block;
-          margin: 0 auto;
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-radius: 5px;
+            display: block;
+            margin: 0 auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 80%;
         }
-      
-        /* Style for the button */
-        button {
-          display: block;
-          margin: 10px auto;
-          padding: 10px 20px;
-          background-color: #007bff; /* Change to your desired button color */
-          color: #fff; /* Change to your desired text color */
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
+
+        /* Button styling */
+        .btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
-      
-        /* Style for the columnCheckboxes div */
-        #columnCheckboxes {
-          display: none;
-          margin: 10px auto;
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-radius: 5px;
+
+        /* Checkbox container styling */
+        .checkbox-container {
+            display: none;
+            text-align: left;
         }
-      
-        /* Style for the fetchButton */
-        #fetchButton {
-          display: none;
-          margin: 10px auto;
-          padding: 10px 20px;
-          background-color: #007bff; /* Change to your desired button color */
-          color: #fff; /* Change to your desired text color */
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
+
+        /* Checkbox styling */
+        .checkbox {
+            margin: 5px 0;
         }
-      
-        /* Style for the fetchedData div */
-        #fetchedData {
-          margin: 10px auto;
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-radius: 5px;
+
+        /* Result styling */
+        .result {
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: left;
         }
-      </style>
-      
+
+        /* Download link styling */
+        .download-link {
+            display: none;
+            text-align: center;
+        }
+
+        .download-link a {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
-    <h1>CSV Import and Filter</h1>
-    
-    <!-- Add an input field for the user to upload the CSV file -->
-    <input type="file" id="csvFile" accept=".csv">
-    <br>
-    
-    <!-- Add a button to upload the CSV and show checkboxes -->
-    <button type="button" onclick="uploadCSV()">Upload CSV and Show Checkboxes</button>
+    <div class="container">
+        <h1>CSV Import and Filter</h1>
+        
+        <input type="file" id="csvFile" accept=".csv">
+        
+        <button class="btn" onclick="uploadCSV()">Upload CSV and Show Checkboxes</button>
 
-    <!-- Add a div to display checkboxes -->
-    <div id="columnCheckboxes" style="display: none;"></div>
-    
-    <!-- Add a button to import and fetch specified columns -->
-    <button type="button" id="fetchButton" onclick="importAndFetchColumns()" style="display: none;">Fetch Columns</button>
+        <div class="checkbox-container" id="columnCheckboxes">
+            <!-- Checkboxes will be inserted here dynamically -->
+        </div>
+
+     <div class="btn" align="center"><button type="button" id="fetchButton" onclick="importAndFetchColumns()">Fetch Columns</button></div>
     
     <!-- Add a div to display the fetched data -->
     <div id="fetchedData"></div>
-
-    <script>
+  
+    </div>
+       <script>
         function uploadCSV() {
             var fileInput = document.getElementById('csvFile');
             
@@ -132,7 +146,7 @@
 
         function displayFetchedData(data) {
             var fetchedDataDiv = document.getElementById('fetchedData');
-            fetchedDataDiv.innerHTML = '<a href="' + data + '" target="_blank">Click Here to Access the Google Sheet</a>';
+            fetchedDataDiv.innerHTML = '<a href="' + data + '" target="_blank">Download the file</a>';
         }
 
         // Function to extract column names from CSV data
@@ -165,5 +179,6 @@
             }
         }
     </script>
+
 </body>
 </html>
